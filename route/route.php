@@ -9,6 +9,8 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+use think\facade\Route;
+
 Route::post(':version/token','api/:version.token/token');  //生成access_token
 
 Route::get(':version/address/:id','api/:version.user/address');  //一般路由规则，

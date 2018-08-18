@@ -12,7 +12,7 @@ use think\facade\Cache;
 class Oauth
 {
     use Send;
-    
+
     /**
      * accessToken存储前缀
      *
@@ -26,6 +26,15 @@ class Oauth
      * @var int
      */
     public static $expires = 7200;
+    /*
+    const KEYS_MD5 = [
+        'appid',
+        'carid',
+        'nonce',
+        'timestamp'
+    ];*/
+
+    public static $keys_md5 = ['appid', 'carid', 'nonce', 'timestamp'];
 
     /**
      * 认证授权 通过用户信息和路由
@@ -34,7 +43,7 @@ class Oauth
      * @throws UnauthorizedException
      */
     final function authenticate()
-    {      
+    {
         return self::certification(self::getClient());
     }
 
@@ -45,7 +54,7 @@ class Oauth
      * @throws UnauthorizedException
      */
     public static function getClient()
-    {   
+    {
         //获取头部信息
         try {
             $authorization = Request::header('authentication');   //tp5.1Facade调用 获取头部字段
@@ -82,9 +91,10 @@ class Oauth
      * _字符开头的变量不参与签名
      */
     public static function makeSign ($data = [],$app_secret = '')
-    {   
-        unset($data['version']);
-        unset($data['sign']);
+    {
+        foreach ($data as $k => $v) {
+            if (!in_array($k, self::$keys_md5)) unset($data[$k]);
+        }
         return self::_getOrderMd5($data,$app_secret);
     }
 

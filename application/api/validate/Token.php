@@ -10,7 +10,7 @@ class Token extends Validate
 
 	protected $rule = [
         'appid'       =>  'require',
-        'mobile'      =>  'mobile|require',
+        'carid'      =>  'require',
         'nonce'       =>  'require',
         'timestamp'   =>  'number|require',
         'sign'        =>  'require'
@@ -18,9 +18,9 @@ class Token extends Validate
 
     protected $message  =   [
         'appid.require'    => 'appid不能为空',
-        'mobile.mobile'    => '手机格式错误',
-        'nonce.require'    => '随机数不能为空',
-        'timestamp.number' => '时间戳格式错误',
-        'sign.require'     => '签名不能为空',
+        'carid.require'    => '车牌号carid不能为空',
+        'nonce.require'    => '随机数nonce不能为空',
+        'timestamp.number' => '时间戳timestamp格式错误',
+        'sign.require'     => '签名sign不能为空',
     ];
 }

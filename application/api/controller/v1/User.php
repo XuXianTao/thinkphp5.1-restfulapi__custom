@@ -14,7 +14,7 @@ class User extends Api
      * @return \think\Response
      */
     public function index()
-    {      
+    {
        dump($this->uid);
     }
 

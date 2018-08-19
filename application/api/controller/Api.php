@@ -38,7 +38,6 @@ class Api
 	{
 		//所有ajax请求的options预请求都会直接返回200，如果需要单独针对某个类中的方法，可以在路由规则中进行配置
 		if($this->request->isOptions()){
-
 			return self::returnMsg(200,'success');
 		}
 		//配置不要鉴权的方法白名单

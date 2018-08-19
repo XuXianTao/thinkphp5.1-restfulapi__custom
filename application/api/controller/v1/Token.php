@@ -24,8 +24,8 @@ class Token
 
     public static $accessTokenPrefix = 'accessToken_';
     public static $refreshAccessTokenPrefix = 'refreshAccessToken_';
-    public static $expires = 7200;
-    public static $refreshExpires = 60 * 60 * 24 * 30;   //刷新token过期时间
+    public static $expires = 7200; // -两个小时
+    public static $refreshExpires = 60 * 60 * 24 * 30;   //刷新token过期时间-一个月
     /**
      * 测试appid，正式请数据库进行相关验证
      */
@@ -43,6 +43,7 @@ class Token
         //参数验证
         $validate = new \app\api\validate\Token;
         if (!$validate->check(input(''))) {
+            //dump(input(''));
             return self::returnMsg(401, $validate->getError());
         }
         self::checkParams(input(''));  //参数校验

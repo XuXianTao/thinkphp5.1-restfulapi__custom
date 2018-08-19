@@ -26,5 +26,6 @@ trait Send
         }
         exit(json_encode($return,JSON_UNESCAPED_UNICODE));
 	}
+
 }
 

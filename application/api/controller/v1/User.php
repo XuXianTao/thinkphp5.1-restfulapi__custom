@@ -9,7 +9,7 @@ use app\api\controller\Api;
 class User extends Api
 {
     /**
-     * 显示资源列表
+     * 显示资源列表get /v1/user
      *
      * @return \think\Response
      */
@@ -19,7 +19,7 @@ class User extends Api
     }
 
     /**
-     * 显示创建资源表单页.
+     * 显示创建资源表单页.get /v1/user/create
      *
      * @return \think\Response
      */
@@ -29,7 +29,7 @@ class User extends Api
     }
 
     /**
-     * 保存新建的资源
+     * 保存新建的资源post /v1/user
      *
      * @param  \think\Request  $request
      * @return \think\Response
@@ -41,14 +41,14 @@ class User extends Api
     }
 
     /**
-     * 显示指定的资源
+     * 显示指定的资源get /v1/user/$id
      *
      * @param  int  $id
      * @return \think\Response
      */
     public function read($id)
     {
-        echo "read";
+        echo "read". $id;
     }
 
     /**
@@ -63,7 +63,7 @@ class User extends Api
     }
 
     /**
-     * 保存更新的资源
+     * 保存更新的资源put /v1/user/$id
      *
      * @param  \think\Request  $request
      * @param  int  $id
@@ -75,7 +75,7 @@ class User extends Api
     }
 
     /**
-     * 删除指定资源
+     * 删除指定资源delete /v1/user/$id
      *
      * @param  int  $id
      * @return \think\Response

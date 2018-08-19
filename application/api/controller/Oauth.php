@@ -74,7 +74,6 @@ class Oauth
      * @return mixed
      */
     public static function certification($data = []){
-
         $getCacheAccessToken = Cache::get(self::$accessTokenPrefix . $data['access_token']);  //获取缓存access_token
         if(!$getCacheAccessToken){
             return self::returnMsg(401,'fail',"access_token不存在或为空");

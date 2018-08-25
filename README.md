@@ -10,7 +10,7 @@
 - 之后记得修改生成的控制器的扩展类型为Api，保证token认证
 - 修改路由，注册一个资源路由：在route.php加入下面一行代码： `Route::resource(':version/goods','api/:version.Goods');`
 
-#目录
+# 目录
 - [用户认证](#用户认证使用流程)
     - [1. 获取token](#1-获取认证token)
     - [2. 认证实例](#2-使用获取的token进行请求任意请求都需携带)

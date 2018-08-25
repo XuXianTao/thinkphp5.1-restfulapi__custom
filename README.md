@@ -1,6 +1,6 @@
 # Thinkphp5.1 Rest API - For smart car
 
-#### 备注：本项目由[Leslin/thinkphp5-restfulapi](https://github.com/Leslin/thinkphp5-restfulapi) 修改定制化而成，另有[postman样例文档](https://documenter.getpostman.com/view/3908260/RWTspEiX)可供参考
+#### 备注：本项目由[Leslin/thinkphp5-restfulapi](https://github.com/Leslin/thinkphp5-restfulapi) 修改定制化而成，另有[postman样例文档](https://documenter.getpostman.com/view/3908260/RWTspEnt)可供参考
 ##### 修改部分
 - 验证部分的mobile手机号码修改为carid车牌号
 - Trait 中的 Send辅助函数添加了header默认值为`['Content-Type' => 'application/json']`,便于返回结果格式化json

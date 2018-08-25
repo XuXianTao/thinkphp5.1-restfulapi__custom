@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: 2018-08-19 20:50:34
--- 服务器版本： 5.7.18-1
--- PHP Version: 7.1.6-2
+-- Generation Time: 2018-08-25 17:03:01
+-- 服务器版本： 5.7.21-1
+-- PHP Version: 7.1.16-1+b1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -48,6 +48,20 @@ CREATE TABLE `auth_car` (
   `uid` int(10) NOT NULL,
   `carid` varchar(10) NOT NULL,
   `appid` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `car_computed_data`
+--
+
+CREATE TABLE `car_computed_data` (
+  `uid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  `data_record` int(11) NOT NULL,
+  `data_computed` int(11) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -100,13 +114,19 @@ ALTER TABLE `auth_car`
   ADD KEY `App` (`appid`);
 
 --
+-- Indexes for table `car_computed_data`
+--
+ALTER TABLE `car_computed_data`
+  ADD KEY `uid` (`uid`),
+  ADD KEY `gid` (`gid`);
+
+--
 -- Indexes for table `car_data`
 --
 ALTER TABLE `car_data`
   ADD KEY `uid` (`uid`),
   ADD KEY `gid` (`gid`),
-  ADD KEY `g_sid` (`g_sid`),
-  ADD KEY `created` (`created`);
+  ADD KEY `g_sid` (`g_sid`);
 
 --
 -- Indexes for table `car_image`
@@ -125,7 +145,7 @@ ALTER TABLE `car_image`
 -- 使用表AUTO_INCREMENT `auth_car`
 --
 ALTER TABLE `auth_car`
-  MODIFY `uid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `uid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 限制导出的表
 --

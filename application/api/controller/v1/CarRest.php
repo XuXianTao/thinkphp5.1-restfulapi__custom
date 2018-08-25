@@ -8,6 +8,9 @@ use think\Request;
 
 class CarRest extends Api
 {
+    /**
+     * @var mixed $query_get
+     */
     protected $query_get;
 
     protected $result_get;

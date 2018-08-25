@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\api\controller\Api;
 use app\api\model\CarData;
+use app\api\model\CarDataComputed;
 use app\api\model\CarImage;
 use think\Controller;
 use think\db\Query;
@@ -52,8 +53,8 @@ class CarDataRest extends CarRest
         }
         $input = json_decode($request->getContent(), true);
         $gid = $input['gid'];
-        unset($input['gid']);
-        foreach($input as $sid => $sdata) {
+        $record_data = $input['computed'];
+        foreach($input['list'] as $sid => $sdata) {
             CarData::create([
                 'uid' => $this->uid,
                 'gid' => $gid,
@@ -64,7 +65,27 @@ class CarDataRest extends CarRest
                 'speed' => $sdata['speed']
             ]);
         }
-        self::returnMsg(201, 'Successfully Saved.');
+        exec('getconf ARG_MAX', $shell_max_chars);
+        $computed_data = null;
+        $status = 1;
+        $python_param = json_encode($input['list']);
+        if ($python_param>$shell_max_chars) {
+            self::returnMsg(500, 'The param length is too long.');
+        } else {
+            exec('python ' . DIR_PYTHON . ' '. $python_param, $computed_data, $status);
+        }
+        //执行成功$status===0
+        if ($status===0) {
+            CarDataComputed::create([
+                'uid' => $this->uid,
+                'gid' => $gid,
+                'data_record' => $record_data,
+                'data_computed' => $computed_data[0]
+            ]);
+            self::returnMsg(201, 'Successfully Saved.');
+        } else {
+            self::returnMsg(500, 'The python script execed failed');
+        }
     }
 
     /**
@@ -112,8 +133,10 @@ class CarDataRest extends CarRest
         //
         if ($id === 'all') {
             db(CarData::getTable())->where('1=1')->delete();
+            db(CarDataComputed::getTable())->where('1=1')->delete();
         } else {
             CarData::destroy(['uid' => $id]);
+            CarDataComputed::destroy(['uid' => $id]);
         }
         self::returnMsg(204, 'Delete Successfully.');
     }

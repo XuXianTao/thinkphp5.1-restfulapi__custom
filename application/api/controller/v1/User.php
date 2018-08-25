@@ -2,11 +2,12 @@
 
 namespace app\api\controller\v1;
 
+use app\api\model\Car;
 use think\Controller;
 use think\Request;
 use app\api\controller\Api;
 
-class User extends Api
+class User extends CarRest
 {
     /**
      * 显示资源列表get /v1/user
@@ -15,7 +16,13 @@ class User extends Api
      */
     public function index()
     {
-       dump($this->uid);
+        parent::index();
+        $result = $this->result_get;
+        $tmp = Car::where($this->query_get);
+        $tmp_count = clone $tmp;
+        $result['total'] = $tmp_count->count();
+        $result['list'] = $tmp->limit($result['page_size'])->page($result['page'])->select();
+        self::returnMsg(200, 'Get Data Successfully.', $result);
     }
 
     /**

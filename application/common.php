@@ -11,3 +11,4 @@
 
 // 应用公共文件
 define('DIR_IMAGE', __DIR__ . '/../public/images_upload');
+define('DIR_PYTHON', __DIR__ . '/../python_script' . '/compute.py');

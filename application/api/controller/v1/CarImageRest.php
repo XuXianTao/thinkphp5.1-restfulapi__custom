@@ -45,9 +45,13 @@ class CarImageRest extends CarRest
     {
         //
         if ($request->contentType()!=='multipart/form-data') {
-            return self::returnMsg(406, 'The Content-Type is not multipart/form-data.');
+            self::returnMsg(406, 'The Content-Type is not multipart/form-data.');
         };
         $images = $_FILES;
+        if (empty($images)) {
+            self::returnMsg(406, 'Haven detected the image files.');
+        }
+
         $gid = $_POST['gid'];
         foreach($images as $sid => $sdata) {
             $file_name = $this->uid . '_' . $gid . '_'. $sid . '_' . time();

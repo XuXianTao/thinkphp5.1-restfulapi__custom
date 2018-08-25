@@ -1,6 +1,6 @@
 # Thinkphp5.1 Rest API - For smart car
 
-#### 备注：本项目由[Leslin/thinkphp5-restfulapi](https://github.com/Leslin/thinkphp5-restfulapi) 修改定制化而成
+#### 备注：本项目由[Leslin/thinkphp5-restfulapi](https://github.com/Leslin/thinkphp5-restfulapi) 修改定制化而成，另有[postman样例文档](https://documenter.getpostman.com/view/3908260/RWTspEiX)可供参考
 ##### 修改部分
 - 验证部分的mobile手机号码修改为carid车牌号
 - Trait 中的 Send辅助函数添加了header默认值为`['Content-Type' => 'application/json']`,便于返回结果格式化json
@@ -9,6 +9,17 @@
 - 命令行 ：`php think make:controller api/v1/Goods`
 - 之后记得修改生成的控制器的扩展类型为Api，保证token认证
 - 修改路由，注册一个资源路由：在route.php加入下面一行代码： `Route::resource(':version/goods','api/:version.Goods');`
+
+#目录
+- [用户认证](#用户认证使用流程)
+    - [1. 获取token](#1-获取认证token)
+    - [2. 认证实例](#2-使用获取的token进行请求任意请求都需携带)
+- [功能接口](#具体功能接口)
+    - [1. 上传数据](#1上传一维数据信息)
+    - [2. 上传图像](#2上传图像数据文件信息)
+    - [3. 获取数据/图像](#3-获取数据)
+    - [4. 获取用户/智能车](#4-获取用户列表智能车列表)
+    - [5. 删除数据](#5-删除数据)
 
 ------------
 ### 用户认证使用流程
@@ -75,7 +86,7 @@
     }
     ```
 
-#### 2.使用获取的token进行请求(任意请求都需携带)
+#### 2. 使用获取的token进行请求(任意请求都需携带)
 ##### 请求方式 任意
 ##### 请求参数
 - header头部信息
@@ -101,7 +112,7 @@
     address-2
     ```
 ##### <font color="red">注意</font>
-  值得注意的是，对于uid和appid没有进行二次认证，默认是约定俗成(在获取token的时候获取到的uid)，这里和token仪器加入base64编码应该是为了避免token在传输过程中被明文获取，提高安全性
+  值得注意的是，对于uid和appid没有进行二次认证，默认是约定俗成(在客户端获取token的时候获取到的uid应当由客户端自己保留并编码以生成之后的请求认证)，这里和token仪器加入base64编码应该是为了避免token在传输过程中被明文获取，提高安全性
 
 
 -----------
@@ -119,47 +130,69 @@
    |Content-Type|是|application/json|指明传递参数类型
 - 请求体内容信息
 参考形式如下
-    - gid => 分组信息，每15ms提交的数据包自增1
-    - 内容的键值 => 为逐渐递增的数字，确定数据顺序
-    - ccd => CCD 数组
-    - electric => 电感感应值
-    - acceleration => 加速度值
-    - speed => 速度编码值
+    - `gid` => 分组信息，每15ms提交的数据包自增1，也就是从1开始往后每发送一次递增1
+    - `list`内容的键值 => 为逐渐递增的数字，确定数据顺序
+    - `ccd` => CCD 数组
+    - `electric` => 电感感应值
+    - `acceleration` => 加速度值
+    - `speed` => 速度编码值
     ```json
     {
-        "gid": "1",
-        "1": {
-            "ccd": "123",
-            "electric": "12345",
-            "acceleration": "23",
-            "speed": "2131"
-        },
-        "2": {
-            "ccd": "124",
-            "electric": "12344",
-            "acceleration": "13",
-            "speed": "2131"
-        }
+    	"gid": {{gid}},
+    	"computed": {{$randomInt}},
+    	"list": {
+    		"1": {
+    		"ccd": {{$randomInt}},
+    		"electric": {{$randomInt}},
+    		"acceleration": {{$randomInt}},
+    		"speed": {{$randomInt}}
+    		},
+    		"2": {
+    			"ccd": {{$randomInt}},
+    			"electric": {{$randomInt}},
+    			"acceleration": {{$randomInt}},
+    			"speed": {{$randomInt}}
+    		},
+    		"3": {
+    			"ccd": {{$randomInt}},
+    			"electric": {{$randomInt}},
+    			"acceleration": {{$randomInt}},
+    			"speed": {{$randomInt}}
+    		},
+    		"4": {
+    			"ccd": {{$randomInt}},
+    			"electric": {{$randomInt}},
+    			"acceleration": {{$randomInt}},
+    			"speed": {{$randomInt}}
+    		},
+    		"5": {
+    			"ccd": {{$randomInt}},
+    			"electric": {{$randomInt}},
+    			"acceleration": {{$randomInt}},
+    			"speed": {{$randomInt}}
+    		},
+    		"6": {
+    			"ccd": {{$randomInt}},
+    			"electric": {{$randomInt}},
+    			"acceleration": {{$randomInt}},
+    			"speed": {{$randomInt}}
+    		},
+    		"7": {
+    			"ccd": {{$randomInt}},
+    			"electric": {{$randomInt}},
+    			"acceleration": {{$randomInt}},
+    			"speed": {{$randomInt}}
+    		},
+    		"8": {
+    			"ccd": {{$randomInt}},
+    			"electric": {{$randomInt}},
+    			"acceleration": {{$randomInt}},
+    			"speed": {{$randomInt}}
+    		}
+    	}
     }
     ```
-    //下次提交的时候gid就该变为2，然后下面内容的键值则是重头算起也就是
-    ```json
-    {
-        "gid": "2",
-        "1": {
-            "ccd": "223",
-            "electric": "12345",
-            "acceleration": "23",
-            "speed": "2131"
-        },
-        "2": {
-            "ccd": "144",
-            "electric": "12344",
-            "acceleration": "13",
-            "speed": "2131"
-        }
-    }
-    ```
+    //下次提交的时候gid就该变为2，然后下面内容的键值则是重头算起
     返回数据
     ```json
     {"code":201,"message":"Successfully Saved.","data":[]}
@@ -244,7 +277,51 @@
         }
     }
     ```
-#### 4. 删除数据
+    
+#### 4. 获取用户列表(智能车列表)
+##### 请求地址 `{SEVER}/v1/user`
+##### 请求方式 `GET`
+##### 请求参数
+- 头部参数
+
+   |字段|是否必须|数值|备注|
+   |:---:|:---:|:---:|---|
+   |authentication|是|`userid`+空格+base64编码加密后数值|其中加密的数值形式为`$appid:$access_token:$uid`|
+
+- 请求参数(附带在url问号后的GET参数)
+
+   |字段|是否必须|数值|备注|
+   |:---:|:---:|:---:|---|
+   |uid|否|用户(车辆)id|获取具体某车的数据
+   |page|否|结果数据的页数|从1开始计数，默认1
+   |limit|否|结果数据每页的数量|默认10
+   
+##### 请求样例
+- 请求方式 `GET`
+- 请求地址 `v1/user`
+- 返回结果
+  `appid` 表示智能车注册的应用id，在本项目中统一只有`tp5restfultest`
+    ```json
+    {
+        "code": 200,
+        "message": "Get Data Successfully.",
+        "data": {
+            "total": 1,
+            "page": 1,
+            "page_size": 10,
+            "list": [
+                {
+                    "uid": 1,
+                    "carid": "A22232",
+                    "appid": "tp5restfultest"
+                }
+            ]
+        }
+    }
+    ```
+    
+    
+#### 5. 删除数据
 ##### 请求地址 `{SERVER}/v1/car/{type}/{uid}`
 ##### 请求方式 `DELETE`
 ##### 请求参数

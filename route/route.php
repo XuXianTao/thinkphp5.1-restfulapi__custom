@@ -20,5 +20,6 @@ Route::resource(':version/user','api/:version.user');       //资源路由
 Route::resource(':version/car/data', 'api/:version.CarDataRest');
 Route::resource(':version/car/image', 'api/:version.CarImageRest');
 
+Route::controller(':version/notoken/car', 'api/:version.GetData');
 //所有路由匹配不到情况下触发该路由
 Route::miss('\app\api\controller\Exception::miss');

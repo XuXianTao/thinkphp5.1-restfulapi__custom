@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 use app\api\controller\Send;
 use app\api\model\Car;
 use app\api\model\CarData;
+use app\api\model\CarDataComputed;
 use app\api\model\CarImage;
 use think\Controller;
 
@@ -59,6 +60,7 @@ class GetData extends Controller
         $tmp_count = clone $tmp;
         $result['total'] = $tmp_count->count();
         $result['list'] = $tmp->limit($result['page_size'])->page($result['page'])->select();
+
         self::returnMsg(200, 'Get Data Successfully.', $result);
     }
 
@@ -70,6 +72,20 @@ class GetData extends Controller
         $this->baseParam();
         $result = $this->result_get;
         $tmp = CarImage::where($this->query_get);
+        $tmp_count = clone $tmp;
+        $result['total'] = $tmp_count->count();
+        $result['list'] = $tmp->limit($result['page_size'])->page($result['page'])->select();
+        self::returnMsg(200, 'Get Data Successfully.', $result);
+    }
+
+    /**
+     * @route('/v1/notoken/car/compute', 'get')
+     */
+    public function getCompute()
+    {
+        $this->baseParam();
+        $result = $this->result_get;
+        $tmp = CarDataComputed::where($this->query_get);
         $tmp_count = clone $tmp;
         $result['total'] = $tmp_count->count();
         $result['list'] = $tmp->limit($result['page_size'])->page($result['page'])->select();

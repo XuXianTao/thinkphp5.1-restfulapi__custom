@@ -5,9 +5,11 @@
 ---
 #### 服务器连接配置
 - 在云服务器的控制台界面找到远程连接，在其中设置远程连接的账号密码(也是在服务器中的账号密码，即`sudo`时候提示输入的密码)  
-(---------waiting-------------)     
+(---------waiting-------------) [腾讯云控制台](https://console.cloud.tencent.com/)
+选择云服务器 -> 在服务器列表详情点击更多 -> 鼠标移动到密码 / 密钥选项 -> 点击重置密码
 之后便可以通过ssh进行远程的服务器连接
-    - windows下ssh连接工具可以使用X-Shell    
+    - windows下ssh连接工具可以使用X-Shell
+    打开X-Shell -> 新建会话 -> 输入主机IP（云服务器IP） -> 其他选项保持默认保存 -> 提示输入用户名（root） -> 输入密码
     (------------waiting------------)
     - linux下ssh连接工具可以直接安装ssh命令工具，直接通过命令行终端进行连接  
     (以apt为例)    
@@ -80,7 +82,8 @@ php -r "unlink('composer-setup.php');"
 
 
 #### 域名解析配置
-1. 在域名交易系统上购买域名yourdomain(本项目域名为chenyt.work)，并在云服务器的控制台中配置域名解析(二级域名api.chenyt.work)，以及进行域名备案等相关工作   
+1. 在域名交易系统上购买域名yourdomain(本项目域名为chenyt.work)，并在云服务器的控制台中配置域名解析(二级域名api.chenyt.work)，以及进行域名备案等相关工作
+    - [域名解析](https://console.cloud.tencent.com/domain)： 在域名列表中选择域名进行解析 -> 点击添加记录 -> 输入主机记录（api） -> 记录类型（A） -> 记录值填入云服务器IP -> 其他选项保持默认保存即可
 (---------waiting-------------)
 2. 定位apache服务器站点配置目录`cd /etc/apache2/sites-available`
 
@@ -103,7 +106,42 @@ php -r "unlink('composer-setup.php');"
 - `sudo vi /etc/apache2/sites-available/yourdomain.conf` 在服务器的站点配置文件中添加监听端口443
     - 证书配置  
     (---------waiting-------------)
-    - 将已有的80端口配置内容复制并粘贴，修改监听端口为443，同时添加SSL解析配置，具体文件内容如下
+        -[获取证书](https://buy.cloud.tencent.com/ssl)
+            - 选择证书种类
+            - 点击申请
+            - 按提示操作即可
+            - 配置证书：
+                Apache文件夹内获得证书文件 1_root_bundle.crt，2_www.domain.com_cert.crt 和私钥文件 3_www.domain.com.key,
+                1_root_bundle.crt 文件包括一段证书代码 “-----BEGIN CERTIFICATE-----”和“-----END CERTIFICATE-----”,
+                2_www.domain.com_cert.crt 文件包括一段证书代码 “-----BEGIN CERTIFICATE-----”和“-----END CERTIFICATE-----”,
+                3_www.domain.com.key 文件包括一段私钥代码“-----BEGIN RSA PRIVATE KEY-----”和“-----END RSA PRIVATE KEY-----”。
+
+    - 证书安装
+        编辑Apache根目录下 conf/httpd.conf 文件，
+        找到 `#LoadModule ssl_module modules/mod_ssl.so` 和 `#Include conf/extra/httpd-ssl.conf`，去掉前面的#号注释；
+        编辑Apache根目录下 conf/extra/httpd-ssl.conf 文件，修改如下内容：
+
+        ```xml
+         <VirtualHost 0.0.0.0:443>
+            DocumentRoot "/var/www/html"
+            ServerName www.domain.com
+            SSLEngine on
+            SSLCertificateFile /usr/local/apache/conf/2_www.domain.com_cert.crt
+            SSLCertificateKeyFile /usr/local/apache/conf/3_www.domain.com.key
+            SSLCertificateChainFile /usr/local/apache/conf/1_root_bundle.crt
+        </VirtualHost>
+        ```
+        配置完成后，重新启动 Apache 就可以使用`https://www.domain.com`来访问了。
+
+        注：
+
+        |配置文件参数|说明|
+        |:---:|:----:|
+        |SSLEngine on|启用SSL功能|
+        |SSLCertificateFile|证书文件|
+        |SSLCertificateKeyFile|私钥文件|
+        |SSLCertificateChainFile|证书链文件|
+        - 将已有的80端口配置内容复制并粘贴，修改监听端口为443，同时添加SSL解析配置，具体文件内容如下
 ```
 <VirtualHost *:80>
 

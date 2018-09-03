@@ -1,6 +1,18 @@
 # 智能车项目——服务器接口搭建
 在云端购买服务器之后，需要依次进行系统选择(在本项目中选用ubuntu系统)、环境搭建(AMP)、接口项目配置(ThinkphpRestApi)
 
+# 目录
+- [前期准备](#前期准备)
+    - [服务器连接配置](#服务器连接配置)
+    - [软件源配置](#软件源配置)
+    - [环境搭建](#ubuntu下环境搭建)
+    - [导入接口项目](#导入接口项目)
+    - [域名解析配置](#域名解析配置)
+    - [SSL协议配置](#SSL协议配置)
+- [正式使用](#正式使用)
+    - [wifi模块](#wifi模块)
+    - [python算法文件](#python算法文件)
+
 前期准备
 ---
 #### 服务器连接配置
@@ -103,6 +115,7 @@ php -r "unlink('composer-setup.php');"
 
 
 #### SSL协议配置
+由于小程序的接口有安全性要求，所以需要为服务器配置相关的https服务，即ssl协议的配置
 - `sudo vi /etc/apache2/sites-available/yourdomain.conf`    
 在服务器的站点配置文件中添加监听端口443
 
@@ -112,10 +125,10 @@ php -r "unlink('composer-setup.php');"
     - 点击申请
     - 按提示操作即可
     - 配置证书：     
-    Apache文件夹内获得证书文件 1_root_bundle.crt，2_www.domain.com_cert.crt 和私钥文件 3_www.domain.com.key
-      - 1_root_bundle.crt 文件包括一段证书代码 “-----BEGIN CERTIFICATE-----”和“-----END CERTIFICATE-----”,
-      - 2_www.domain.com_cert.crt 文件包括一段证书代码 “-----BEGIN CERTIFICATE-----”和“-----END CERTIFICATE-----”,
-      - 3_www.domain.com.key 文件包括一段私钥代码“-----BEGIN RSA PRIVATE KEY-----”和“-----END RSA PRIVATE KEY-----”。
+    Apache文件夹内获得证书文件 `1_root_bundle.crt`，`2_www.domain.com_cert.crt` 和私钥文件 `3_www.domain.com.key`
+      - `1_root_bundle.crt` 文件包括一段证书代码 “-----BEGIN CERTIFICATE-----”和“-----END CERTIFICATE-----”,
+      - `2_www.domain.com_cert.crt` 文件包括一段证书代码 “-----BEGIN CERTIFICATE-----”和“-----END CERTIFICATE-----”,
+      - `3_www.domain.com.key` 文件包括一段私钥代码“-----BEGIN RSA PRIVATE KEY-----”和“-----END RSA PRIVATE KEY-----”。
 
   - 证书安装    
     编辑Apache根目录下 conf/httpd.conf 文件，

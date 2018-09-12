@@ -237,6 +237,22 @@ php -r "unlink('composer-setup.php');"
 
 正式使用
 ---
+#### 数据库导入
+- 定位路径到项目下的数据库文件目录`cd /var/www/html/tp_rest/_mysql.sql`
+
+- 登录mysql`mysql -uroot -p`(其中-u后面紧跟的参数是在安装mysql时候设置的账号，-p后面留空)回车后再输入对应账号的密码即可进入mysql
+  ![](./screenshot/mysql_enter.png)
+  
+- 查看当前拥有的数据库，创建新的数据库smart_car, `create database smart_car;`     
+  ![](./screenshot/mysql_create.png)
+  
+- 切换到`smart_car`数据库 `use smart_car`     
+  ![](./screenshot/mysql_change.png)
+  
+- 导入数据库文件`source smart_car.sql`     
+  ![](./screenshot/mysql_source.png)
+
+------
 #### wifi模块
 - 数据请求的结构部分请参照[README文档](./README.md)进行构建测试
 - 以每15ms为周期，将数据打包上传到服务器对应接口，分别上传到以为数据接口与图片接口，且二者请求数据的`gid`请保持一致，每15ms的请求递增一次，而内部的打包数据序号(`list`下的数据键值与图片的键值)则每次都从序号1开始

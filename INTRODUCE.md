@@ -252,6 +252,8 @@ php -r "unlink('composer-setup.php');"
 - 导入数据库文件`source smart_car.sql`     
   ![](./screenshot/mysql_source.png)
 
+- 完成后即可退出mysql`exit`
+
 ------
 #### wifi模块
 - 数据请求的结构部分请参照[README文档](./README.md)进行构建测试
